@@ -1,7 +1,5 @@
-def clean_inventory(df):
-    df = df.drop_duplicates(subset=['SKU', 'Location'])
-    df['ReorderQty'] = (df['ReorderPoint'] - df['OnHandQty']).clip(lower=0)
+def clean_data(df):
+    df = df.drop_duplicates(subset="SKU")
+    df = df[df["Qty"] >= 0]
+    df["Reorder"] = df["Qty"].apply(lambda x: "Yes" if x < 20 else "No")
     return df
-
-def get_low_stock(df):
-    return df[df['OnHandQty'] < df['ReorderPoint']]
